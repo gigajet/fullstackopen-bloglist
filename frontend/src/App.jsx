@@ -56,20 +56,20 @@ const App = () => {
   const [password, setPassword]=useState('')
   const [errorMsg, setErrorMsg]=useState(null)
   const [statusMsg, setStatusMsg]=useState(null)
-  const [title, setTitle]=useState('')
-  const [author, setAuthor]=useState('')
-  const [url, setUrl]=useState('')
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs => {
+      blogs.sort((a,b)=>{
+        return a.likes-b.likes
+      })
       setBlogs( blogs )
-    )  
+    })  
   }, [])
   useEffect(()=>{
     const u=window.localStorage.getItem('bloglistLoggedUser')
     if (u) {
       const user=JSON.parse(u)
-      setUser(u)
+      setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
@@ -118,7 +118,7 @@ const App = () => {
     console.log('addBlog',blogObj)
     const blog = await blogService.create(blogObj)
     setBlogs(blogs.concat(blog))
-    setStatus(`New blog added: ${title} by ${author}`)
+    setStatus(`New blog added: ${blog.title} by ${blog.author}`)
   }
 
   const handleLike=async (blogObj)=>{
@@ -140,9 +140,20 @@ const App = () => {
           return b
         }
       })
+      newBlogs.sort((a,b)=>a.likes-b.likes)
       setBlogs(newBlogs)
     } catch (e) {
       setError(`${e.name}: ${e.message}`)
+    }
+  }
+
+  const handleRemove=async (blog)=>{
+    console.log('remove',blog)
+    if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
+      await blogService.remove(blog)
+      setStatus(`Removed ${blog.title} by ${blog.author}`)
+      const newBlogs=blogs.filter(b=>b.id!==blog.id)
+      setBlogs(newBlogs)
     }
   }
 
@@ -152,7 +163,7 @@ const App = () => {
         <h2>blogs</h2>
         <div>Welcome, {user.name} <button onClick={handleLogout}>logout</button></div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+          <Blog key={blog.id} blog={blog} handleLike={handleLike} handleRemove={handleRemove} user={user} />
         )}
         <Toggleable buttonLabel='new note' ref={newBlogRef}>
           <NewBlogForm addBlog={addBlog} />

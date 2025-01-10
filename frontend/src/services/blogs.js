@@ -26,18 +26,23 @@ const create = async (blog)=> {
 }
 
 const update=async (blog)=>{
+  const url=`${baseUrl}/${blog.id}`
+  const response = await axios.put(url, blog)
+  return response.data
+}
+
+const remove=async (blog)=>{
   let headers = {}
   if (authToken) {
     headers = {
       Authorization: `Bearer ${authToken}`
     }
   }
-  console.log('blogService.update',blog)
   const url=`${baseUrl}/${blog.id}`
-  const response = await axios.put(url, blog, {
+  const response = await axios.delete(url, {
     headers: headers,
   })
   return response.data
 }
 
-export default { getAll, setToken, create, update }
+export default { getAll, setToken, create, update, remove }
