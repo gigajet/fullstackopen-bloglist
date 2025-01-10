@@ -1,10 +1,10 @@
 import axios from 'axios'
 const baseUrl = '/api/blogs'
 
-let authToken=null
+let authToken = null
 
-const setToken=(newToken)=>{
-  authToken=newToken
+const setToken = (newToken) => {
+  authToken = newToken
 }
 
 const getAll = () => {
@@ -12,7 +12,7 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-const create = async (blog)=> {
+const create = async (blog) => {
   let headers = {}
   if (authToken) {
     headers = {
@@ -25,13 +25,13 @@ const create = async (blog)=> {
   return response.data
 }
 
-const update=async (blog)=>{
+const update=async (blog) => {
   const url=`${baseUrl}/${blog.id}`
   const response = await axios.put(url, blog)
   return response.data
 }
 
-const remove=async (blog)=>{
+const remove=async (blog) => {
   let headers = {}
   if (authToken) {
     headers = {

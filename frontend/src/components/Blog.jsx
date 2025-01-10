@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 const Blog = ({ blog, handleLike, handleRemove, user }) => {
   const [showDetail, setShowDetail]=useState(false)
@@ -13,10 +13,10 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
   if (blog.user && blog.user.name) {
     blogUser=blog.user.name
   }
-  const removeButton=()=>{
+  const removeButton=() => {
     return (
       <div>
-        <button onClick={async ()=>{await handleRemove(blog)}}>remove</button>
+        <button onClick={async () => {await handleRemove(blog)}}>remove</button>
       </div>
     )
   }
@@ -28,29 +28,29 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
         <div style={blogStyle}>
           <div>
             {blog.title} - {blog.author}
-            <button onClick={()=>setShowDetail(false)}>hide</button>
+            <button onClick={() => setShowDetail(false)}>hide</button>
           </div>
           <div>
             {blog.url}
           </div>
           <div>
-            likes {blog.likes} 
-            <button onClick={async ()=>{await handleLike(blog)}}>like</button>
+            likes {blog.likes}
+            <button onClick={async () => {await handleLike(blog)}}>like</button>
           </div>
           <div>
             {blogUser}
           </div>
           {blogCreator===loggedInUser && removeButton()}
-        </div>  
+        </div>
       </div>
     )
   } else {
-      return (
-        <div style={blogStyle}>
-          {blog.title} - {blog.author}
-          <button onClick={()=>setShowDetail(true)}>view</button>
-        </div>  
-      )
+    return (
+      <div style={blogStyle}>
+        {blog.title} - {blog.author}
+        <button onClick={() => setShowDetail(true)}>view</button>
+      </div>
+    )
   }
 }
 
