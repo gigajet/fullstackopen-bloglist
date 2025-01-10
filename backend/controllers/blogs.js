@@ -39,7 +39,8 @@ blogsRouter.put('/:id', async (request, response)=> {
     new: true,
   })
   if (blog) {
-    response.json(blog)
+    const blogJson=await blog.populate('user', {username: 1, name: 1})
+    response.json(blogJson)
   } else {
     response.status(404).end()
   }

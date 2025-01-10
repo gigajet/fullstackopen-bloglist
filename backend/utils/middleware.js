@@ -2,6 +2,9 @@ const { JsonWebTokenError } = require("jsonwebtoken")
 const User = require("../models/user")
 const config=require('./config')
 const jwt=require('jsonwebtoken')
+const morgan=require('morgan')
+
+const requestLogging=morgan('tiny')
 
 const tokenExtractor=async (req, res, next)=>{
   const auth=req.header('Authorization')
@@ -70,4 +73,5 @@ module.exports={
   errorHandler,
   unknownEndpoint,
   userExtractor,
+  requestLogging,
 }
