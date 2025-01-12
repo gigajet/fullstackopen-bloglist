@@ -38,10 +38,10 @@ const LoginForm=({ username, password, setUsername, setPassword, setError, handl
         }
       }}>
         <div>
-          username: <input type='text' name='username' onChange={({ target }) => {setUsername(target.value)}} />
+          username: <input data-testid='username' type='text' name='username' onChange={({ target }) => {setUsername(target.value)}} />
         </div>
         <div>
-          password: <input type='password' name='password' onChange={({ target }) => {setPassword(target.value)}} />
+          password: <input data-testid='password' type='password' name='password' onChange={({ target }) => {setPassword(target.value)}} />
         </div>
         <button type='submit'>login</button>
       </form>
@@ -115,7 +115,6 @@ const App = () => {
 
   const addBlog=async (blogObj) => {
     newBlogRef.current.setVisibility(false)
-    console.log('addBlog',blogObj)
     const blog = await blogService.create(blogObj)
     setBlogs(blogs.concat(blog))
     setStatus(`New blog added: ${blog.title} by ${blog.author}`)
@@ -128,9 +127,6 @@ const App = () => {
       user: blogObj.user ? blogObj.user.id : blogObj.user,
     }
     console.log('reqObj',reqObj)
-    if (blogObj.user && blogObj.user._id) {
-      reqObj.user=blogObj.user._id.toString()
-    }
     try {
       const blog=await blogService.update(reqObj)
       const newBlogs=blogs.map(b => {
@@ -165,7 +161,7 @@ const App = () => {
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} handleLike={handleLike} handleRemove={handleRemove} user={user} />
         )}
-        <Toggleable buttonLabel='new note' ref={newBlogRef}>
+        <Toggleable buttonLabel='new blog' ref={newBlogRef}>
           <NewBlogForm addBlog={addBlog} />
         </Toggleable>
       </>
