@@ -22,6 +22,7 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
   }
   const blogCreator=blog.user ? blog.user.username : ''
   const loggedInUser=user ? user.username : null
+  console.log('Blog',blogCreator,loggedInUser)
   if (showDetail) {
     return (
       <div>

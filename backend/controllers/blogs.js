@@ -16,11 +16,10 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     title, author, url, like,
     user: user._id,
   }
-  const blog = new Blog(newBlog)
-  const result = await blog.save()
-  user.blogs=user.blogs.concat(result._id)
+  const blog = await new Blog(newBlog).save()
+  user.blogs=user.blogs.concat(blog._id)
   await user.save()
-  response.status(201).json(result)
+  response.status(201).json(await blog.populate('user', {username: 1, name: 1}))
 })
 
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response)=> {

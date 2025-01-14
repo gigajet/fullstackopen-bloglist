@@ -60,7 +60,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs => {
       blogs.sort((a,b) => {
-        return a.likes-b.likes
+        return b.likes-a.likes
       })
       setBlogs( blogs )
     })
@@ -118,6 +118,7 @@ const App = () => {
     const blog = await blogService.create(blogObj)
     setBlogs(blogs.concat(blog))
     setStatus(`New blog added: ${blog.title} by ${blog.author}`)
+    console.log('addBlog', blog)
   }
 
   const handleLike=async (blogObj) => {
@@ -136,7 +137,7 @@ const App = () => {
           return b
         }
       })
-      newBlogs.sort((a,b) => a.likes-b.likes)
+      newBlogs.sort((a,b) => b.likes-a.likes)
       setBlogs(newBlogs)
     } catch (e) {
       setError(`${e.name}: ${e.message}`)
